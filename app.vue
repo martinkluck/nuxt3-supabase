@@ -1,7 +1,7 @@
 <script setup>
-import { createClient } from "@supabase/supabase-js";
-const { supabaseUrl, supabaseKey } = useRuntimeConfig();
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { createClient } from "@supabase/supabase-js/dist/main/index.js";
+const { supabaseUrl, supabasePublicKey } = useRuntimeConfig();
+const supabase = createClient(supabaseUrl, supabasePublicKey);
 console.log(supabase);
 </script>
 
