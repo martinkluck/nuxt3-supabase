@@ -19,7 +19,7 @@ const signUp = async () => {
   loginState.user = user;
   loginState.error = error;
 
-  console.log({ loginState });
+  // console.log({ loginState });
 };
 </script>
 <template>
