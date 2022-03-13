@@ -1,5 +1,9 @@
 <script setup>
 import { ref } from "vue";
+import { store } from "../store";
+import { createClient } from "@supabase/supabase-js/dist/main/index.js";
+const { supabaseUrl, supabasePublicKey } = useRuntimeConfig();
+const supabase = createClient(supabaseUrl, supabasePublicKey);
 
 const navLinks = ref([
   {
@@ -19,13 +23,29 @@ const navLinks = ref([
     url: "/todomvc",
   },
 ]);
+
+store.user = supabase.auth.user();
+supabase.auth.onAuthStateChange((_, session) => {
+  store.user = session.user;
+});
+
+const displayNavLinks = computed(() => {
+  if (store.user?.aud === "authenticated") {
+    return navLinks.value.filter((item) => item.url !== "/login");
+  } else {
+    return navLinks.value.filter((item) => item.url !== "/profile");
+  }
+});
 </script>
 
 <template>
   <main>
     <nav>
       <ul class="nav-list">
-        <li v-for="navItem in navLinks" :key="navItem.url">
+        <li
+          v-for="(navItem, index) in displayNavLinks"
+          :key="navItem.url + index"
+        >
           <nuxt-link :to="navItem.url">{{ navItem.label }}</nuxt-link>
         </li>
       </ul>
