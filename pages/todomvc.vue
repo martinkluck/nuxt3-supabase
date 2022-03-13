@@ -7,6 +7,9 @@ const supabase = createClient(supabaseUrl, supabasePublicKey);
 const newTask = ref("");
 const taskList = ref([]);
 
+let { data: todos, error } = await supabase.from("todos").select("* ");
+taskList.value = todos;
+
 const addTask = async () => {
   try {
     const { data, error } = await supabase.from("todos").insert({
